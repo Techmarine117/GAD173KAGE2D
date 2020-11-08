@@ -22,7 +22,7 @@ bool Example::start()
 
 	float winWidth = m_window.getSize().x;
 	float winHeight = m_window.getSize().y;
-	tileWith = winWidth / GRID_ROW_COUNT;
+	tileWidth = winWidth / GRID_ROW_COUNT;
 	tileHeight = (winHeight * 0.5) / GRID_COLUMN_COUNT;
 
 	
@@ -42,7 +42,7 @@ bool Example::start()
 		vertilcalLines[i] = sf::RectangleShape();
 		vertilcalLines[i].setSize(sf::Vector2f(winHeight * 0.5, 2));
 		vertilcalLines[i].setRotation(90);
-		vertilcalLines[i].setPosition(sf::Vector2f( tileWith * (i + 1),0));
+		vertilcalLines[i].setPosition(sf::Vector2f( tileWidth * (i + 1),0));
 		vertilcalLines[i].setFillColor(sf::Color::Green);
 
 
@@ -55,6 +55,8 @@ bool Example::start()
 
 void Example::update(float deltaT)
 {
+	sf::Vector2f mousePosition = (sf::Vector2f)sf::Mouse::getPosition(m_window);
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape) && m_window.hasFocus())
 	{
 		m_running = false;
@@ -66,6 +68,92 @@ void Example::update(float deltaT)
 		m_running = false;
 	}
 	ImGui::End();
+	int newMouseX = mousePosition.x / tileWidth;
+	int newMouseY = mousePosition.y / tileHeight;
+	if (newMouseX <= 0)
+		newMouseX = 0;
+	if (newMouseX >= GRID_ROW_COUNT - 1)
+		newMouseX = GRID_ROW_COUNT - 1;
+
+	if (newMouseY <= 0)
+		newMouseY = 0;
+	if (newMouseY >= GRID_COLUMN_COUNT - 1)
+		newMouseY = GRID_COLUMN_COUNT - 1;
+
+
+	// keyboard presses
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)) 
+	{
+		selectedTileType = 1;
+		selectedColor = sf::Color::White;
+
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) 
+	{
+		selectedTileType = 2;
+		selectedColor = sf::Color::Red;
+
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3)) 
+	{
+		selectedTileType = 3;
+		selectedColor = sf::Color::Magenta;
+
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4)) 
+	{
+		selectedTileType = 4;
+		selectedColor = sf::Color::Blue;
+
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num5)) 
+	{
+		selectedTileType = 5;
+		selectedColor = sf::Color::Cyan;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num6)) 
+	{
+		selectedTileType = 6;
+		selectedColor = sf::Color::Yellow;
+
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num7)) 
+	{
+		selectedTileType = 7;
+		selectedColor = sf::Color::Black;
+
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num8)) 
+	{
+		selectedTileType = 8;
+		selectedColor = sf::Color::Green;
+	}
+	if ((sf::Mouse::isButtonPressed(sf::Mouse::Left))) 
+	{
+		int index = newMouseY * GRID_ROW_COUNT + newMouseX;
+		if (tiles[index] != nullptr) 
+		{
+			tiles[index]->setTile(sf::Vector2f(newMouseX * tileWidth, newMouseY * tileHeight));
+			tiles[index]->setcolor(selectedColor);
+			cellMap[index] = selectedTileType;
+
+
+		}
+		else 
+		{
+			tiles[index] = new Tiles(tileWidth, tileHeight);
+			tiles[index]->setTile(sf::Vector2f(newMouseX * tileWidth, newMouseY * tileHeight));
+			tiles[index]->setcolor(selectedColor);
+			cellMap[index] = selectedTileType;
+
+		}
+
+
+	}
 }
 
 void Example::render()
@@ -80,6 +168,14 @@ void Example::render()
 	for (size_t i = 0; i < GRID_ROW_COUNT; i++) 
 	{
 		m_window.draw(vertilcalLines[i]);
+	}
+
+	for (size_t i = 0; i < GRID_ROW_COUNT * GRID_COLUMN_COUNT; i++)
+	{
+		if (tiles[i] != nullptr && tiles[i]->active) 
+		{
+			m_window.draw(*tiles[i]->tileshap);
+		}
 	}
 	
 }
