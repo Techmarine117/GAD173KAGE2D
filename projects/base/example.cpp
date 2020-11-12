@@ -14,6 +14,181 @@ Example &Example::inst()
 	return s_instance;
 }
 
+void Example::loadTilemap() 
+{
+	for (size_t i = 0; i < MAX_GRID_INDEX; i++)
+	{
+		int y = i / GRID_ROW_COUNT;
+		int x = i - y * GRID_ROW_COUNT;
+
+
+		switch (cellMap[i])
+		{
+		case 0:
+			if (tiles[i] != nullptr && tiles[i]->active) 
+			{
+				tiles[i]->DisableTile();
+
+			}
+			break;
+		case 1:
+			if (tiles[i] != nullptr) 
+			{
+				
+				tiles[i]->setTile(sf::Vector2f(x * tileWidth, y * tileHeight));
+				tiles[i]->setcolor(sf::Color::White);
+				cellMap[i] = 1;
+
+			}
+			else
+			{
+				tiles[i] = new Tiles(tileWidth, tileHeight);
+				tiles[i]->setTile(sf::Vector2f(x * tileWidth, y * tileHeight));
+				tiles[i]->setcolor(sf::Color::White);
+				cellMap[i] = 1;
+
+
+			}
+			break;
+		case 2:
+			if (tiles[i] != nullptr)
+			{
+
+				tiles[i]->setTile(sf::Vector2f(x * tileWidth, y * tileHeight));
+				tiles[i]->setcolor(sf::Color::Red);
+				cellMap[i] = 2;
+
+			}
+			else
+			{
+				tiles[i] = new Tiles(tileWidth, tileHeight);
+				tiles[i]->setTile(sf::Vector2f(x * tileWidth, y * tileHeight));
+				tiles[i]->setcolor(sf::Color::Red);
+				cellMap[i] = 2;
+
+
+			}
+			break;
+		case 3:
+			if (tiles[i] != nullptr)
+			{
+
+				tiles[i]->setTile(sf::Vector2f(x * tileWidth, y * tileHeight));
+				tiles[i]->setcolor(sf::Color::Magenta);
+				cellMap[i] = 3;
+
+			}
+			else
+			{
+				tiles[i] = new Tiles(tileWidth, tileHeight);
+				tiles[i]->setTile(sf::Vector2f(x * tileWidth, y * tileHeight));
+				tiles[i]->setcolor(sf::Color::Magenta);
+				cellMap[i] = 3;
+
+
+			}
+			break;
+		case 4:
+			if (tiles[i] != nullptr)
+			{
+
+				tiles[i]->setTile(sf::Vector2f(x * tileWidth, y * tileHeight));
+				tiles[i]->setcolor(sf::Color::Blue);
+				cellMap[i] = 4;
+
+			}
+			else
+			{
+				tiles[i] = new Tiles(tileWidth, tileHeight);
+				tiles[i]->setTile(sf::Vector2f(x * tileWidth, y * tileHeight));
+				tiles[i]->setcolor(sf::Color::Blue);
+				cellMap[i] = 4;
+
+
+			}
+			break;
+		case 5:
+			if (tiles[i] != nullptr)
+			{
+
+				tiles[i]->setTile(sf::Vector2f(x * tileWidth, y * tileHeight));
+				tiles[i]->setcolor(sf::Color::Cyan);
+				cellMap[i] = 5;
+
+			}
+			else
+			{
+				tiles[i] = new Tiles(tileWidth, tileHeight);
+				tiles[i]->setTile(sf::Vector2f(x * tileWidth, y * tileHeight));
+				tiles[i]->setcolor(sf::Color::Cyan);
+				cellMap[i] = 5;
+
+
+			}
+			break;
+		case 6:
+			if (tiles[i] != nullptr)
+			{
+
+				tiles[i]->setTile(sf::Vector2f(x * tileWidth, y * tileHeight));
+				tiles[i]->setcolor(sf::Color::Yellow);
+				cellMap[i] = 6;
+
+			}
+			else
+			{
+				tiles[i] = new Tiles(tileWidth, tileHeight);
+				tiles[i]->setTile(sf::Vector2f(x * tileWidth, y * tileHeight));
+				tiles[i]->setcolor(sf::Color::Yellow);
+				cellMap[i] = 6;
+
+
+			}
+			break;
+		case 7:
+			if (tiles[i] != nullptr)
+			{
+
+				tiles[i]->setTile(sf::Vector2f(x * tileWidth, y * tileHeight));
+				tiles[i]->setcolor(sf::Color::Black);
+				cellMap[i] = 7;
+
+			}
+			else
+			{
+				tiles[i] = new Tiles(tileWidth, tileHeight);
+				tiles[i]->setTile(sf::Vector2f(x * tileWidth, y * tileHeight));
+				tiles[i]->setcolor(sf::Color::Black);
+				cellMap[i] = 7;
+
+
+			}
+			break;
+		case 8:
+			if (tiles[i] != nullptr)
+			{
+
+				tiles[i]->setTile(sf::Vector2f(x * tileWidth, y * tileHeight));
+				tiles[i]->setcolor(sf::Color::Green);
+				cellMap[i] = 8;
+
+			}
+			else
+			{
+				tiles[i] = new Tiles(tileWidth, tileHeight);
+				tiles[i]->setTile(sf::Vector2f(x * tileWidth, y * tileHeight));
+				tiles[i]->setcolor(sf::Color::Green);
+				cellMap[i] = 8;
+
+
+			}
+			break;
+		}
+
+	}
+
+}
+
 bool Example::start()
 {
 	m_backgroundSprite = kage::TextureManager::getSprite("data/sky.jpg");
@@ -132,6 +307,29 @@ void Example::update(float deltaT)
 		selectedTileType = 8;
 		selectedColor = sf::Color::Green;
 	}
+
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::L)) 
+	{
+		loadScene("file");
+		loadTilemap();
+
+
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::O)) 
+	{
+		saveScene("file");
+
+	}
+
+
+
+
+
+
+
+
+
 	if ((sf::Mouse::isButtonPressed(sf::Mouse::Left))) 
 	{
 		int index = newMouseY * GRID_ROW_COUNT + newMouseX;
@@ -183,5 +381,70 @@ void Example::render()
 void Example::cleanup()
 {
 	delete m_backgroundSprite;
+}
+
+
+void Example::saveScene(std::string fileName) 
+{
+	Save Saving;
+	std::ostringstream os;
+	for (int i : cellMap) 
+	{
+		os << i;
+
+	}
+
+	std::string str(os.str());
+	Saving.Saved(fileName, str);
+
+}
+
+void Example::loadScene(std::string fileName) 
+{
+	Save loader;
+	std::string data = loader.Load(fileName);
+
+	for (size_t i = 0; i < 400; i++)
+	{
+		char val = data.at(i);
+		int num = val - 48;
+		switch (num)
+		{
+		case 0:
+			cellMap[i] = 0;
+			break;
+		case 1:
+			cellMap[i] = 1;
+			break;
+		case 2:
+			cellMap[i] = 2;
+			break;
+		case 3:
+			cellMap[i] = 3;
+			break;
+		case 4:
+			cellMap[i] = 4;
+			break;
+		case 5:
+			cellMap[i] = 5;
+			break;
+		case 6:
+			cellMap[i] = 6;
+			break;
+		case 7:
+			cellMap[i] = 7;
+			break;
+		case 8:
+			cellMap[i] = 8;
+			break;
+		
+			
+		default:
+			std::cout << num;
+			break;
+		}
+
+	}
+
 }
 

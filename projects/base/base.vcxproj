@@ -99,6 +99,7 @@
   <ItemGroup>
     <ClInclude Include="app.h" />
     <ClInclude Include="example.h" />
+    <ClInclude Include="Save.h" />
     <ClInclude Include="Tiles.h" />
   </ItemGroup>
   <ItemGroup>
@@ -106,6 +107,7 @@
     <ClCompile Include="dependencies.cpp" />
     <ClCompile Include="example.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Save.cpp" />
     <ClCompile Include="Tiles.cpp" />
   </ItemGroup>
   <ItemGroup>
